@@ -86,10 +86,58 @@ void obtainMedian(int input_numbers[])
 	cout << "\nMedian of the list is:\n";
 }
 
+void CoolSort(int input_numbers[])
+{
+	int dec_sequence[10];
+	cout << "\nPart A:\nHow many numbers are to be sorted?";
+	do
+	{
+		cin >> n;
+		if (n == 0)
+		{
+			cout << "\nPlease enter a value greater than zero:\n";
+		}
+	}
+	while (n <= 0);
+	cout << "\nEnter the numbers: " << endl;
+	for (int i = 0; i < n; i++)
+	{
+		cin >> input_numbers[i];
+	}
+	cout << "\nEnter 3 numbers in decreasing order: " << endl;
+	for (int i = 0; i < 3; i++)
+	{
+		cin >> dec_sequence[i];
+	}
+}
+
+int Search(int input_numbers[],int lower,int upper)
+{
+	int mid;
+	while (lower < upper)
+	{
+		mid = (lower + upper) / 2;
+		if (input_numbers[mid] < mid)
+		{
+			upper = mid - 1;
+		}
+		else if (input_numbers[mid] > mid)
+		{
+			lower = mid + 1;
+		}
+		else
+		{
+			return mid;
+		}
+	}
+	return -1;
+}
+
 int main()
 {
 	int input_numbers[50];								//Stores the input
 	int choice;
+	int i;
 	//Prints out a menu
 	do
 	{
@@ -97,12 +145,22 @@ int main()
 		cin >> choice;
 		switch (choice)
 		{
-		case 1: SelectionSort(input_numbers);
-			SelectionSort_modified(input_numbers);
-			obtainMedian(input_numbers);
-			break;
-		default:
-			break;
+			case 1: SelectionSort(input_numbers);
+					SelectionSort_modified(input_numbers);
+					obtainMedian(input_numbers);
+					break;
+			case 3: cout << "\nEnter the input size N:" << endl;
+					cin >> n;
+					cout << "\nEnter " << n << " numbers in sorted order:\n";
+					for (int i = 1; i <= n; i++)
+					{
+						cin >> input_numbers[i];
+					}
+					i = Search(input_numbers, 1, n);
+					cout << "\nValue of i: " << i;
+					break;
+			default:
+					break;
 		}
 	}
 	while (choice != 4);
