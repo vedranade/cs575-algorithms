@@ -1,6 +1,6 @@
 #include<iostream>
 #include<math.h>
-
+//ADDING SOME COMMENTS
 using namespace std;
 int n;
 
