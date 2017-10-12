@@ -111,9 +111,9 @@ int Search(int input_numbers[],int lower,int upper)
 void CoolSort(int input_numbers[])
 {
 	int partition_list[10];																//Stores the decreasing sequence of numbers
-	int m;
-	int temp;
-	int k;
+	int m;																				//Stores number of elements in the decreasing sequence of numbers
+	int temp;																			//Used for swapping
+	int k;																				//Counter variable for 3rd for loop
 	cout << "\nPart A:\nHow many numbers are to be sorted?";
 	do
 	{
@@ -146,16 +146,16 @@ void CoolSort(int input_numbers[])
 		cin >> partition_list[i];
 	}
 
-	for (int i = 0; i < m; i++)
+	for (int i = 0; i < m; i++)																			//For every element in the sequence of decreasing numbers
 	{
-		for (int j = partition_list[i]; j < n; j++)
+		for (int j = partition_list[i]; j < n; j++)														//Perform insertion sort for the ith pass
 		{
 			temp = input_numbers[j];
-			for (k = j; k >= partition_list[i] && input_numbers[k - partition_list[i]] > temp; k = k - partition_list[i])
+			for (k = j; k >= partition_list[i] && input_numbers[k - partition_list[i]] > temp; k = k - partition_list[i])		//Shift sorted elements till correct position of jth element in input array
 			{
 				input_numbers[k] = input_numbers[k - partition_list[i]];
 			}
-			input_numbers[k] = temp;
+			input_numbers[k] = temp;																	//Put previous value of jth element in its correct position
 		}
 	}
 
