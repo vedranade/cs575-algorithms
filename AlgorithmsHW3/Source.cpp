@@ -1,6 +1,6 @@
 #include<iostream>
 #include<math.h>
-
+#define INFINITY 999
 using namespace std;
 int n;
 
@@ -73,7 +73,7 @@ void SelectionSort_modified(int input_numbers[])
 	}
 }
 
-void obtainMedian(int input_numbers[])
+void obtainMedian(int input_numbers[])																		
 {
 	if ((n % 2) == 0)
 	{
@@ -84,31 +84,6 @@ void obtainMedian(int input_numbers[])
 		cout << "\nMedian of the list is:\n" << input_numbers[n / 2];
 	}
 	cout << "\nMedian of the list is:\n";
-}
-
-void CoolSort(int input_numbers[])
-{
-	int dec_sequence[10];
-	cout << "\nPart A:\nHow many numbers are to be sorted?";
-	do
-	{
-		cin >> n;
-		if (n == 0)
-		{
-			cout << "\nPlease enter a value greater than zero:\n";
-		}
-	}
-	while (n <= 0);
-	cout << "\nEnter the numbers: " << endl;
-	for (int i = 0; i < n; i++)
-	{
-		cin >> input_numbers[i];
-	}
-	cout << "\nEnter 3 numbers in decreasing order: " << endl;
-	for (int i = 0; i < 3; i++)
-	{
-		cin >> dec_sequence[i];
-	}
 }
 
 int Search(int input_numbers[],int lower,int upper)
@@ -133,9 +108,68 @@ int Search(int input_numbers[],int lower,int upper)
 	return -1;
 }
 
+void CoolSort(int input_numbers[])
+{
+	int partition_list[10];																//Stores the decreasing sequence of numbers
+	int m;
+	int temp;
+	int k;
+	cout << "\nPart A:\nHow many numbers are to be sorted?";
+	do
+	{
+		cin >> n;
+		if (n == 0)
+		{
+			cout << "\nPlease enter a value greater than zero:\n";
+		}
+	}
+	while (n <= 0);
+	cout << "\nEnter the numbers: " << endl;
+	for (int i = 0; i < n; i++)
+	{
+		cin >> input_numbers[i];
+	}
+
+	cout << "\nPart A:\nHow many numbers are to be added to the list of numbers in decreasing sequence?";
+	do
+	{
+		cin >> m;
+		if (m == 0)
+		{
+			cout << "\nPlease enter a value greater than zero:\n";
+		}
+	}
+	while (m <= 0);
+	cout << "\nEnter the numbers: " << endl;
+	for (int i = 0; i < m; i++)
+	{
+		cin >> partition_list[i];
+	}
+
+	for (int i = 0; i < m; i++)
+	{
+		for (int j = partition_list[i]; j < n; j++)
+		{
+			temp = input_numbers[j];
+			for (k = j; k >= partition_list[i] && input_numbers[k - partition_list[i]] > temp; k = k - partition_list[i])
+			{
+				input_numbers[k] = input_numbers[k - partition_list[i]];
+			}
+			input_numbers[k] = temp;
+		}
+	}
+
+	cout << "Sorted array using cool sort:" << endl;
+	for (int i = 0; i < n; i++)
+	{
+		cout << input_numbers[i] << " ";
+	}
+}
+
 int main()
 {
 	int input_numbers[50];								//Stores the input
+	int partition_list[10];								
 	int choice;
 	int i;
 	//Prints out a menu
@@ -149,6 +183,8 @@ int main()
 					SelectionSort_modified(input_numbers);
 					obtainMedian(input_numbers);
 					break;
+			case 2:	CoolSort(input_numbers);
+				break;
 			case 3: cout << "\nEnter the input size N:" << endl;
 					cin >> n;
 					cout << "\nEnter " << n << " numbers in sorted order:\n";
