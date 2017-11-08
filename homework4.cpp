@@ -30,53 +30,55 @@ void knapsack()
 
 	for ( int i = 1; i <= n; i++ )							//Rows from 1 to no. of items
 	{
-		for ( int j = 0; j <= knapsack_weight; j++ )
+		for ( int j = 0; j <= knapsack_weight; j++ )							//Columns from 0 to weight to knapsack
 		{
-			if ( j == 0 )
+			if ( j == 0 )														//Initializing the first column to zero
 			{
 				table[i][j] = 0;
 			}
 			else
 			{
-				if ( weights[i] <= j && i==1 )
+				if ( weights[i] <= j && i==1 )									//For the first row
 				{
 					table[i][j] = values[i];
 				}
-				else
+				else															//For subsequent rows
 				{
-					table[i][j] = table[i - 1][j];
+					table[i][j] = table[i - 1][j];								//Keeps the previous solution, takes the value from the cell one position above
 					if ( weights[i] <= j )
 					{
-						table[i][j] = max(values[i] + table[i - 1][j - weights[i]], table[i][j]);
+						table[i][j] = max(values[i] + table[i - 1][j - weights[i]], table[i][j]);			//Formula for calculating new value at a cell
 					}
 				}
 			}
-			cout << table[i][j] << " ";
+			cout << table[i][j] << " ";												//Prints out the table
 		}
 		cout << endl;
 	}
 	cout << endl << "Maximum value that the knapsack can contain: " << table[n][knapsack_weight];
 
-	current = table[n][knapsack_weight];
+	//Algorithm to backtrack and print the item numbers picked
+	current = table[n][knapsack_weight];							//Starting from last cell in the table
 	x = n; y = knapsack_weight;
 
 	while(current!=0 )
 	{
-		if ( table[x - 1][y] == current )
+		if ( table[x - 1][y] == current )									//If value above a cell is the same as the current cell, then that item was not picked
 		{
-			current = table[x - 1][y];
+			current = table[x - 1][y];										//Move to the cell above
 			x--;
 		}
-		else
-		{
-			solution_set[k] = x;
+		else																//If value above a cell is not the same as the current cell
+		{																	
+			solution_set[k] = x;											//Add the current item as part of the list of items picked
 			k++;
-			current = table[x - 1][y - weights[x]];
+			current = table[x - 1][y - weights[x]];							//Proceed to the next cell
 			y = y - weights[x];
 			x--;
 		}
 	}
-
+	
+	//Printing out the list of items picked
 	cout << endl << "Item numbers picked are: " << endl;
 	std::sort(solution_set, solution_set + k);
 	for ( int i = 0; i < k; i++ )
@@ -91,13 +93,14 @@ void MakeChangeOptimalB(int change, int k, int c)
 	int coins[20], coin_count[20];				//'Coins' holds the set of coins with different denominations, 'coin_count' holds number of coins of a particular denomination
 
 
-	for ( int i = 0; i <= k; i++ )
-	{
+	for ( int i = 0; i <= k; i++ )										//Creating the set of coins, for example : {1, 3, 9, 27, 81} when c = 3 and k = 4
+	{	
 		coins[i] = pow(c, i);
 		coin_count[i] = 0;
 	}
-	std::sort(coins, coins + (k + 1), std::greater<int>());				//Arranging the set of coins in decreasing order
+	std::sort(coins, coins + (k + 1), std::greater<int>());				//Arranging the set of coins in decreasing order so that algorithm can be applied starting from first position in array
 
+	//Algorithm to make change
 	while ( change != 0 )
 	{
 		for ( int i = 0; i <= k; i++ )
@@ -114,6 +117,7 @@ void MakeChangeOptimalB(int change, int k, int c)
 		}
 	}
 
+	//Printing out the result
 	for ( int i = 0; i <= k; i++ )
 	{
 		cout << endl << "No. of coins of denomination " << coins[i] << " :" << coin_count[i];
@@ -127,22 +131,22 @@ void MakeChangeOptimalA(int change)
 	do
 	{
 		if ( change < 5 )
-		{
+		{															//Make change using pennies
 			pennies = pennies + change;
 			change = change - pennies;
 		}
 		else if ( change >= 5 && change < 10 )
-		{
+		{															//Make change using nickels
 			nickels = nickels + 1;
 			change = change - 5;
 		}
 		else if ( change >= 10 && change < 25 )
-		{
+		{															//Make change using dimes
 			dimes = dimes + floor(change / 10);
 			change = change - (dimes * 10);
 		}
 		else if ( change >= 25 )
-		{
+		{															//Make change using quarters
 			quarters = quarters + floor(change / 25);
 			change = change - (quarters * 25);
 		}
@@ -183,7 +187,7 @@ int main()
 	
 	do					//Prints out a menu
 	{
-		cout << endl << "1. Problem 1 (Solving 0-1 Knapsack problem using dynamic programming, table and backtracking)" << endl << "2. Problem 2 part A-A (Making change using quarters, dimes, nickels and pennies)" << endl << "3. Problem 2 part A-B (Making change when the set of coins are: c^k)" << endl << "4. Problem 2 part B (Making change using algorithm that runs in O(nk) time)" << endl << "5. Exit" << endl << "Enter choice:";
+		cout << endl << endl << "1. Problem 1 (Providing 0-1 Knapsack solution using dynamic programming, table and backtracking)" << endl << "2. Problem 2 part A-A (Making change using quarters, dimes, nickels and pennies)" << endl << "3. Problem 2 part A-B (Making change when the set of coins are: c^k)" << endl << "4. Problem 2 part B (Making change using algorithm that runs in O(nk) time)" << endl << "5. Exit" << endl << "Enter choice:";
 		cin >> ch;
 		switch ( ch )
 		{
@@ -223,10 +227,10 @@ int main()
 					cout << endl << "Wrong input, please enter a value for 'c' greater than one:";
 					cin >> c;
 				}
-				MakeChangeOptimalB(change, k, c);
+				MakeChangeOptimalB(change, k, c);					//Make change using greedy method for a certain value of c and k
 				break;
 
-			case 4: //Taking the input from user
+			case 4:
 				cout << endl << "Enter the amount of change: ";
 				cin >> change;
 				while ( change <= 0 )							
