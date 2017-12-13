@@ -37,7 +37,7 @@ void Prim_algorithm()
 	cout << endl << "Enter the number of vertices in the graph:";
 	cin >> no_of_vertices;
 	char matrix_label[27];
-	cout << endl << "Enter " << no_of_vertices << " vertices, starting from the source vertex ";		//Accepting each vertex label
+	cout << endl << "Enter " << no_of_vertices << " vertices (alphabets), starting from the source vertex ";		//Accepting each vertex label
 	for ( int i = 0; i < no_of_vertices; i++ )
 	{
 		cin >> matrix_label[i];
@@ -47,7 +47,7 @@ void Prim_algorithm()
 	{
 		for ( int j = 0; j < no_of_vertices; j++ )
 		{
-			adjacency_matrix[i][j] = 0;
+			adjacency_matrix[i][j] = 999;
 		}
 	}
 
@@ -55,8 +55,12 @@ void Prim_algorithm()
 	{
 		for ( int j = 0; j < no_of_vertices; j++ )
 		{
-				cout << endl << "Enter the weight of the edge between vertex " << matrix_label[i] << " and vertex " << matrix_label[j] << "(or 999 if no edge exists):";
-				cin >> adjacency_matrix[i][j];
+				if(adjacency_matrix[j][i] == 999)
+				{
+					cout << endl << "Enter the weight of the edge between vertex " << matrix_label[i] << " and vertex " << matrix_label[j] << "(or 0 if no edge exists):";
+					cin >> adjacency_matrix[i][j];
+					adjacency_matrix[j][i] = adjacency_matrix[i][j];
+				}
 		}
 	}
 	
@@ -107,7 +111,7 @@ void Prim_algorithm()
 	}
 
 	//printMST(adjacency_matrix, no_of_vertices);
-	printf("Edge   Weight\n");
+	printf("\nOutput:\nEdge   Weight\n");
 	for ( int i = 1; i < no_of_vertices; i++ )
 		printf("%c - %c    %d \n", matrix_label[vertex[i].parent], matrix_label[i], adjacency_matrix[i][vertex[i].parent]);
 	
@@ -121,7 +125,7 @@ void Dijkstra_algorithm()
 	int no_of_vertices;
 	cin >> no_of_vertices;
 	char matrix_label[27];
-	cout << endl << "Enter " << no_of_vertices << " vertices, starting from the source vertex ";		//Accepting each vertex label
+	cout << endl << "Enter " << no_of_vertices << " vertices (alphabets), starting from the source vertex ";		//Accepting each vertex label
 	for ( int i = 1; i <= no_of_vertices; i++ )
 	{
 		cin >> matrix_label[i];
@@ -255,7 +259,7 @@ void Dijkstra_algorithm()
 	}
 	
 	//Displaying output table:
-	cout << endl << "Output: " << endl;
+	cout << endl << endl << "Output: " << endl;
 	for ( int i = 1; i <= no_of_vertices; i++ )
 	{
 		cout << "\t" << matrix_label[i];
